@@ -1,0 +1,14 @@
+.vs/*
+docs/*
+*.sln
+*.vcxproj
+*.filters
+*.user
+*.exe
+/.vscode
+x64/
+*/.vs
+*.tlog
+/build/*
+/.cache/*
+*.clang-format
