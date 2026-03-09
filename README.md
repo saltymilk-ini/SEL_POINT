@@ -21,7 +21,7 @@ v({0, 1}) = v({1, 2});
 ```
 
 ## My Implementation
-My swizzle implementation is also based on a proxy class **exchanger** like Eigen's IndexedView(but is not improved from Eigen, at the time it was created, I didn't know Eigen's IndexedView). Unlike Eigen, the index list in the exchanger class is not stored as run-time data but is generated at compile time. The exchanger class only holds a pointer to the run-time data.
+My swizzle implementation is also based on a proxy class **exchanger** like Eigen's IndexedView(but is not improved from Eigen, at the time it was created, I didn't know Eigen's IndexedView). Unlike Eigen, the index list in the exchanger class is not stored as run-time data but is generated at compile time. The exchanger class only holds a pointer to the run-time data.  
 It provides name identifiers for common indexes, and the combinations are not predefined, you can create arbitrary swizzles.
 It can be used as follows:
 ```cpp
