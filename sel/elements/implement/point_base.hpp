@@ -106,13 +106,14 @@ public:
      * @par You can write code like this:
      * @code
      * sel::point4i p4i(1, 2, 3, 4);
-     * sel::point4f p4f = p4i.swizzle(y, x, w, z);//use xyzw. p4f is (2.0, 1.0, 4.0, 3.0)
-     * p4i.swizzle(r, g, b) = sel::point3f(2.0);//use rgba. now p4i becomes (2, 2, 2, 4)
+     * sel::point4f p4f = p4i.swizzle(y, x, w, z);//use xyzw. p4f is {2.0, 1.0, 4.0, 3.0}
+     * p4i.swizzle(r, g, b) = sel::point3f(2.0);//use rgba. now p4i becomes {2, 2, 2, 4}
+     * p4i.swizzle(s, t) = p4i.swizzle(p, q);//use stpq. now p4i is seo to {2, 4, 2, 4}
      * sel::point4d p4d = p4i.swizzle(0, 0, 1, 2);//you can use index(0-255) too
      * p4i = p4i.swizzle(w, z, y, x);//it can be used to reorder the components of a point
      * p4i.swizzle(0, 1) = p4i.swizzle(2, 3);//or copy backward/forward in the same point
      * p4i.swizzle(0, 1) = p4d.swizzle(0, 1);//copying between 2 different points is also supported
-     * p4i.swizzle(0, y, 2, a);//define POINT_SWIZZLE_USE_MIXED_INDICATOR to enable mixed indicators
+     * p4i.swizzle(0, y, b, q);//define POINT_SWIZZLE_USE_MIXED_IDENTIFIER to enable mixed identifiers
      * @endcode
      */
     template<typename... Args>
@@ -396,9 +397,9 @@ point_<T, N, Derived>::swizzle(Args &&...) &
 
     static_assert(detail::is_in_range<Args...>(N), "swizzle component position out of range.");
 
-#ifndef POINT_SWIZZLE_USE_MIXED_INDICATORS
+#ifndef POINT_SWIZZLE_USE_MIXED_IDENTIFIERS
     static_assert(detail::is_uniform_type<Args...>(),
-        "define 'POINT_SWIZZLE_USE_MIXED_INDICATOR' to enable mixed swizzle indicator types.");
+        "define 'POINT_SWIZZLE_USE_MIXED_IDENTIFIER' to enable mixed swizzle identifier types.");
 #endif
 
     /*URVO, no need for copy or move constructors*/
@@ -414,9 +415,9 @@ point_<T, N, Derived>::swizzle(Args &&...) const &
 
     static_assert(detail::is_in_range<Args...>(N), "swizzle component position out of range.");
 
-#ifndef POINT_SWIZZLE_USE_MIXED_INDICATORS
+#ifndef POINT_SWIZZLE_USE_MIXED_IDENTIFIERS
     static_assert(detail::is_uniform_type<Args...>(),
-        "define 'POINT_SWIZZLE_USE_MIXED_INDICATOR' to enable mixed swizzle indicator types.");
+        "define 'POINT_SWIZZLE_USE_MIXED_IDENTIFIER' to enable mixed swizzle identifier types.");
 #endif
 
     /*URVO, no need for copy or move constructors*/

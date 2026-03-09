@@ -8,15 +8,15 @@
 SEL_NAMESPACE_BEGIN
 
 template<typename T, typename... Rest>
-inline constexpr auto max(T first, Rest... rest) noexcept/*-> std::common_type_t<T, Rest...>*/ 
+inline constexpr auto max(T first, Rest... rest) noexcept -> std::common_type_t<T, Rest...>
 {
     if constexpr (sizeof...(Rest) == 0)
         return first;
     else
     {
-        constexpr auto max_of_rest = max(rest...);
+        auto max_of_rest = max(rest...);
 
-        if constexpr (max_of_rest > first)
+        if (max_of_rest > first)
             return max_of_rest;
 
         return first;
@@ -24,7 +24,7 @@ inline constexpr auto max(T first, Rest... rest) noexcept/*-> std::common_type_t
 }
 
 template<typename T, typename... Rest>
-inline constexpr auto min(T first, Rest... rest) noexcept/* -> std::common_type_t<T, Rest...>*/
+inline constexpr auto min(T first, Rest... rest) noexcept -> std::common_type_t<T, Rest...>
 {
     if constexpr (sizeof...(Rest) == 0)
         return first;
@@ -42,10 +42,7 @@ inline constexpr auto sum(Args... args) noexcept -> std::common_type_t<Args...>
     return (args + ...);
 }
 
-/**
- * @brief The function to check if a value is NaN regardless of whether
- * it's an integral or a floating-point number.
- */
+/** @brief Check if a value is NaN regardless of whether it's an integral or a floating-point number.*/
 template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
 inline constexpr bool is_nan(T val) noexcept
 {

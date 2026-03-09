@@ -7,17 +7,10 @@ SEL_NAMESPACE_BEGIN
 
 SEL_DETAIL_BEGIN
 
-/**
-* @file This file defines arithmetic safe conversion check methods.
-* @brief When conversions are taken place between two elements of different arithmetic types, the default
-* behaviour is to prevent unsafe implicit arithmetic conversions from happening. That is to say, if the 
-* underlying arithmetic conversion may cause numeric truncation, rounding, or precision loss(as previously
-* mentioned, unsafe), it is not allowed to implicitly take place by default. You must use cast(member function
-* of all element classes) to perform an explicit conversion.<br>
-* If the macro SEL_NO_SAFE_CONVERSION_CHECK is defined, the conversion safety check between elements is disabled.
-* @note Arithmetic operations between element and scalar(built-in arithmetic type) is safety check free, but the
-* compiler may emit warnings.
-*/
+/** 
+ * @file This file defines arithmetic safe conversion check methods.
+ * @brief A safe conversion is a conversion that will not cause numeric truncation, rounding, or precision loss.
+ */
 
 template<typename From, typename To>
 class is_safe_conversion

@@ -1,0 +1,4 @@
+#pragma once
+
+// #define POINT_SWIZZLE_USE_MIXED_IDENTIFIERS
+#define SEL_NO_SAFE_CONVERSION_CHECK

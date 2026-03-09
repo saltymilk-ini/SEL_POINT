@@ -6,7 +6,7 @@ get_filename_component(ProjectName ${CMAKE_CURRENT_LIST_DIR} NAME)
 
 project(${ProjectName})
 
-file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
+file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test.cpp")
 
 add_compile_options(-Wconversion)
 

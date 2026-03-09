@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../config.hpp"
+
 #ifdef _MSC_VER
 #define CPP_VERSION _MSVC_LANG
 #else

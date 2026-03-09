@@ -27,7 +27,10 @@ public:
      * The braced initialization ensures that narrowing conversions are forbidden.
     */
     template<typename... Args, typename = std::enable_if_t<sizeof...(Args) == N>>
-    explicit point(detail::scalar<Args>&&... args) : _v{ std::forward<Args>(args)... } {}
+    explicit point(detail::scalar<Args>... args) : _v{ detail::convert<T>(args)... }
+    {
+        ((detail::safe_numeric_conversion_assert<Args, T>()), ...);
+    }
 
     /** 
      * @brief Construct a point with all components equal to val.
@@ -61,16 +64,12 @@ public:
                 [](auto, auto rhs) { return detail::convert<value_type>(rhs); });
     }
 
-    template<typename U, typename V>
-    point(const point<U, N - 1> &rhs, detail::scalar<V> last)
+    template<typename U>
+    point(const point<T, N - 1> &rhs, detail::scalar<U> last)
     {
-        detail::safe_element_conversion_assert<point<U, N - 1>, point<T, N - 1>>();
+        detail::safe_element_conversion_assert<U, T>();
 
-        if constexpr (std::is_same_v<value_type, U>)
-            memcpy(_v, rhs._v, (N - 1) * sizeof(value_type));
-        else
-            detail::vector_vector_opt(_v, detail::arithmetic_progression<0, 1, N - 1>{}, rhs._v,
-                [](auto, auto rhs) { return detail::convert<value_type>(rhs); });
+        memcpy(_v, rhs._v, (N - 1) * sizeof(value_type));
 
         _v[N - 1] = detail::convert<T>(last);
     }
@@ -97,8 +96,12 @@ public:
 public:
     point() : _v{} {}
 
-    template<typename U>
-    point(detail::scalar<U> _x, detail::scalar<U> _y) : x(detail::convert<T>(_x)), y(detail::convert<T>(_y)) {}
+    template<typename... Args, typename = std::enable_if_t<sizeof...(Args) == 2>>
+    point(detail::scalar<Args>... args)
+        : _v{ detail::convert<T>(args)... }
+    {
+        ((detail::safe_numeric_conversion_assert<Args, T>()), ...);
+    }
 
     /** 
      * @brief Construct a point with all components equal to val.
@@ -143,9 +146,12 @@ public:
 public:
     point() : _v{} {}
 
-    template<typename U>
-    point(detail::scalar<U> _x, detail::scalar<U> _y, detail::scalar<U> _z)
-        : x(detail::convert<T>(_x)), y(detail::convert<T>(_y)), z(detail::convert<T>(_z)) {}
+    template<typename... Args, typename = std::enable_if_t<sizeof...(Args) == 3>>
+    point(detail::scalar<Args>... args)
+        : _v{ detail::convert<T>(args)...}
+    {
+        ((detail::safe_numeric_conversion_assert<Args, T>()), ...);
+    }
 
     /** 
      * @brief Construct a point with all components equal to val.
@@ -155,10 +161,12 @@ public:
     explicit point(detail::scalar<U> val) : point(val, val, val) {}
 
     /** @brief Construct a 3 dimension point from a 2 dimension point.*/
-    template<typename U, typename V>
-    point(const point<U, 2> &point2, detail::scalar<V> s) 
-        : point(detail::convert<value_type>(point2.x), detail::convert<value_type>(point2.y),
-                detail::convert<value_type>(s)) {}
+    template<typename U>
+    point(const point<T, 2> &point2, detail::scalar<U> s)
+        : point(point2.x, point2.y, detail::convert<T>(s))
+    {
+        detail::safe_element_conversion_assert<U, T>();
+    }
 
     template<typename U>
     inline void set(detail::scalar<U> _x, detail::scalar<U> _y, detail::scalar<U> _z)
@@ -197,9 +205,12 @@ public:
 public:
     point() : _v{} {}
 
-    template<typename U>
-    point(detail::scalar<U> _x, detail::scalar<U> _y, detail::scalar<U> _z, detail::scalar<U> _w)
-        : x(detail::convert<T>(_x)), y(detail::convert<T>(_y)), z(detail::convert<T>(_z)), w(detail::convert<T>(_w)) {}
+    template<typename... Args, typename = std::enable_if_t<sizeof...(Args) == 4>>
+    point(detail::scalar<Args>... args)
+        : _v{ detail::convert<T>(args)... }
+    {
+        ((detail::safe_numeric_conversion_assert<Args, T>()), ...);
+    }
 
     /** 
      * @brief Construct a point with all components equal to val.
@@ -209,10 +220,12 @@ public:
     explicit point(detail::scalar<U> val) : point(val, val, val, val) {}
 
     /** @brief Construct a 4 dimension point from a 3 dimension point.*/
-    template<typename U, typename V>
-    point(const point<U, 3> &point3, detail::scalar<V> s) 
-        : point(detail::convert<value_type>(point3.x), detail::convert<value_type>(point3.y),
-                detail::convert<value_type>(point3.z), detail::convert<value_type>(s)) {}
+    template<typename U>
+    point(const point<T, 3> &point3, detail::scalar<U> s)
+        : point(point3.x, point3.y, point3.z, detail::convert<value_type>(s))
+    {
+        detail::safe_element_conversion_assert<U, T>();
+    }
 
     template<typename U>
     inline void set(detail::scalar<U> _x, detail::scalar<U> _y, detail::scalar<U> _z, detail::scalar<U> _w)
