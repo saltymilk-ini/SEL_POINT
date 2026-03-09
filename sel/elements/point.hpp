@@ -1,3 +1,9 @@
+/*
+MIT License
+Copyright (c) 2026 saltymilk-ini
+The full license is in LICENSE file included with this distribution at https://github.com/saltymilk-ini/SEL_POINT
+*/
+
 #include "./implement/point_def.hpp"
 
 SEL_NAMESPACE_BEGIN
