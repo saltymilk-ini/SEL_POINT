@@ -9,11 +9,11 @@ Some famous libraries do provide swizzle, but none of them fulfills all of my ex
 ## Eigen
  Eigen provides the **IndexedView** class, which is a very powerful and flexible swizzle-like implementation, but it is not intuitive to use.
 ```cpp
-Eigen::vec3f v{1.0f, 2.0f, 3.0f};
+Eigen::Vector3f v{1.0f, 2.0f, 3.0f};
 // swz is an IndexedView, it holds the reference to v, and the index list {1, 0}, which means swz is a view of v.yx.
 auto swz = v({1, 0});
 // v becomes {5.0f, 4.0f, 3.0f}
-swz = Eigen::vec2f{4.0f, 5.0f}; 
+swz = Eigen::Vector2f{4.0f, 5.0f}; 
 // reorder a vector, v becomes {3.0f, 5.0f, 4.0f}
 v({0, 1, 2}) = v({2, 0, 1});
 // copy forward/backward, v becomes {5.0f, 4.0f, 4.0f}
@@ -46,4 +46,9 @@ sel::point<int, 7> p7i = p4f.swizzle(0, 1, 2, 3, 2, 1, 0);
 // of identifiers in one swizzle expression, though it seems not very useful.
 sel::point<double, 4> p4d = p4f.swizzle(x, g, p, 3); 
 ```
+
+## Drawback
+* In fact, swizzle is a member function of the point class, it needs to be called as a function, which does not fully replicate the syntax of GLSL.  
+* swizzle is also a macro, it modifies every parameter of the swizzle function call, so it is invasive, and it may cause some unexpected errors if you define another function or macro with the same name.
+
 Other usage can be found in the example code in test.cpp.
