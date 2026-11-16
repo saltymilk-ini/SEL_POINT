@@ -8,7 +8,11 @@ project(${ProjectName})
 
 file(GLOB SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/test.cpp")
 
-add_compile_options(-Wconversion)
+if(MSVC)
+  add_compile_options(/W4)
+else()
+  add_compile_options(-Wall -Wextra -Wconversion)
+endif()
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
